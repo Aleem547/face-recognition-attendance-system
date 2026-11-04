@@ -113,5 +113,11 @@
     "liveDatabaseRepair": "not_applied",
     "dockerImageBuild": "not_run",
     "publicDeployment": "not_performed"
+  },
+  "subsequentRenderPreparation": {
+    "status": "software_preparation_verified_host_pending",
+    "report": "RENDER_VALIDATION.json",
+    "publicDeployment": "not_performed",
+    "freeHostCapacity": "unmeasured"
   }
 }

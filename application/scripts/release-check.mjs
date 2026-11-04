@@ -8,7 +8,7 @@ import {homedir} from 'node:os';
 
 const scriptDirectory=dirname(fileURLToPath(import.meta.url));
 const suites=['auth.integration','register.integration','privacy.integration','biometric.integration',
- 'verification.integration','session-research','verification.receipts','biometric.client','deployment',
+ 'verification.integration','session-research','verification.receipts','biometric.client','deployment','render-host',
  'biometric.http','camera.lifecycle','verification.client','paired-research','face-evaluation','automatic-checkin','automatic-checkin.http','class-automation','class-clock','course-analytics','reliability','local-closeout'];
 const digest=b=>createHash('sha256').update(b).digest('hex');
 const normalized=b=>Buffer.from(b.toString('utf8').replace(/^\uFEFF/,'').replace(/\r\n/g,'\n'));

@@ -1,5 +1,7 @@
 # Face Recognition Attendance System
 
+Free public demo deployment: [Render setup and limits](docs/render.md). The Free service sleeps when idle; automatic attendance timing is unavailable while it sleeps. The full face workload still needs a hosted capacity check.
+
 ### A saved record for every class. A clear receipt for every correction.
 
 A role-based attendance application with a persistent class register, frozen session rosters, correction history, CSV exports, course analytics, and an optional experimental face pipeline.

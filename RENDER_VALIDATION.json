@@ -1,0 +1,51 @@
+{
+  "schema": "fras-render-preparation-v1",
+  "date": "2026-11-05",
+  "status": "software_preparation_verified_host_pending",
+  "target": "one Free Render Docker web service",
+  "newPaidResources": "none",
+  "newRenderDatabase": "none",
+  "isolatedRenderOriginChecks": {
+    "status": "passed",
+    "namedChecks": 5
+  },
+  "deploymentRegressionChecks": {
+    "status": "passed",
+    "namedChecks": 15
+  },
+  "blueprintLocalChecks": {
+    "status": "passed",
+    "scope": "local YAML parse and free-plan/resource/secret configuration assertions; Render API validation not run",
+    "checks": 7
+  },
+  "publisherChecks": {
+    "status": "passed",
+    "namedChecks": 6,
+    "networkPush": "intercepted in a local fixture; no remote repository was contacted",
+    "windowsWrapper": "not executed on Linux",
+    "checks": [
+      "exact Docker preparation with uncommitted staged additions/deletions updated on a new branch without a commit or network access",
+      "repeated preparation is idempotent and preserves the existing branch and HEAD",
+      "unrelated staged content blocks publication without changing HEAD",
+      "modified release source blocks preparation and preserves local edits",
+      "publication stages only the public allowlist, excludes private/unlisted files, and uses the configured fixture author; push intercepted",
+      "repeated intercepted publication does not create a duplicate commit"
+    ]
+  },
+  "priorUserEvidence": {
+    "linuxAmd64DockerBuild": "user screenshot shows successful build of previous Docker preparation",
+    "localContainer": "user screenshot shows Healthy and signed-in database reads",
+    "scope": "previous container; not the Render build"
+  },
+  "windowsPowerShellWrapper": "not_executed_in_preparation_workspace",
+  "renderApiBlueprintValidation": "not_run",
+  "renderAccount": "not_accessed",
+  "publicRenderDeployment": "not_created",
+  "hostedMemoryAndSpeed": "not_measured; 512 MB and 0.1 CPU may be insufficient for the combined workload",
+  "classClockDuringRenderSleep": "not_running; existing gap handling requires staff review",
+  "biometricReliability": "unvalidated",
+  "previousDeferredAcceptance": "unchanged",
+  "privateDatabaseAccess": "none",
+  "databaseMigrations": "none",
+  "secretRotation": "none"
+}

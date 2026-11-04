@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {readFile,mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {createTestDatabase} from './pglite-pool.mjs';
+import {clockFailure} from '../lib/automation/failure.ts';
+import {diagnoseClock,runtimeAddress} from '../scripts/clock-diagnostics.mjs';
+import {validateContainer} from '../scripts/container-start.mjs';
+import {exportContainerEnv} from '../scripts/export-container-env.mjs';
+let n=0;const check=async(name,fn)=>{await fn();console.log(`PASS ${++n}: ${name}`);};
+const {db,pool}=await createTestDatabase(),temp=await mkdtemp(join(tmpdir(),'fras-deploy-check-'));
+const source=await readFile(new URL('../db/migrations/009_class_automation.sql',import.meta.url),'utf8');
+const clockSql=source.match(/CREATE FUNCTION attendai\.tick_session_automation\(\)[\s\S]*?\$\$;/)[0];
+const owner=async fn=>{await db.exec('RESET ROLE');try{return await fn();}finally{await db.exec('SET ROLE attendai_app');}};
+try{
+ for(const [version,name] of [['001','initial_schema'],['002','authentication'],['003','persistent_register'],['004','camera_choice'],['005','biometric_enrollment'],['006','controlled_verification'],['007','session_research'],['008','automatic_checkin'],['009','class_automation']])await db.exec(await readFile(new URL(`../db/migrations/${version}_${name}.sql`,import.meta.url),'utf8'));
+ await db.exec('SET ROLE attendai_app');
+ await check('read-only diagnostic confirms migration function and restricted role',async()=>{const r=await diagnoseClock(pool);assert.equal(r.status,'read_only_preflight_passed',JSON.stringify(r));assert.equal(r.clockExecuted,false);});
+ await check('diagnostic creates no heartbeat, attendance or automation audit entries',async()=>owner(async()=>{for(const table of ['class_clock_state','attendance_records','session_automation_events'])assert.equal((await db.query('SELECT count(*)::int AS n FROM attendai.'+table)).rows[0].n,0);}));
+ await check('diagnostic detects a missing execute grant without calling the clock',async()=>{await owner(()=>db.exec('REVOKE EXECUTE ON FUNCTION attendai.tick_session_automation() FROM attendai_app'));const r=await diagnoseClock(pool);assert.ok(r.issues.includes('clock_execute_grant_missing'));await owner(()=>db.exec('GRANT EXECUTE ON FUNCTION attendai.tick_session_automation() TO attendai_app'));});
+ await check('diagnostic detects function source drift',async()=>{await owner(()=>db.exec(clockSql.replace('CREATE FUNCTION','CREATE OR REPLACE FUNCTION').replace("'busy',false","'busy',true")));assert.ok((await diagnoseClock(pool)).issues.includes('clock_function_differs_from_source'));await owner(()=>db.exec(clockSql.replace('CREATE FUNCTION','CREATE OR REPLACE FUNCTION')));});
+ await check('diagnostic rejects an owner/superuser runtime identity',async()=>owner(async()=>{assert.ok((await diagnoseClock(pool)).issues.includes('unexpected_runtime_role'));}));
+ await check('known TLS and PostgreSQL failures produce fixed safe guidance',async()=>{assert.equal(clockFailure({code:'42501',message:'PRIVATE_CONNECTION_CANARY'}).category,'permissions');assert.equal(clockFailure({cause:{code:'SELF_SIGNED_CERT_IN_CHAIN',message:'PRIVATE_KEY_CANARY'}}).category,'tls');});
+ await check('unknown errors never expose arbitrary code, message or query',async()=>{const safe=JSON.stringify(clockFailure({code:'PRIVATE_CANARY',message:'postgres://SECRET',detail:'student name',query:'PRIVATE_SQL'}));assert.ok(!/PRIVATE|SECRET|student name/.test(safe));assert.ok(safe.includes('UNCLASSIFIED'));});
+ await check('connection failures are redacted in the diagnostic report',async()=>{const r=await diagnoseClock({connect:async()=>{throw Object.assign(Error('PRIVATE_PASSWORD'),{code:'ECONNREFUSED'});}});assert.equal(r.failure.code,'ECONNREFUSED');assert.ok(!JSON.stringify(r).includes('PRIVATE_PASSWORD'));});
+ const base={APP_DATABASE_URL:'postgresql://'+'attendai_app:fixture@db.example/fixture?sslmode=verify-full',BETTER_AUTH_URL:'https://demo.example',BETTER_AUTH_SECRET:'fixture-private-value-'.repeat(3),ATTENDAI_BIOMETRICS_ENABLED:'false',ATTENDAI_VERIFICATION_TRIAL_ENABLED:'false'};
+ await check('container accepts private runtime configuration with HTTPS',async()=>assert.equal(validateContainer(base).port,'3000'));
+ await check('container refuses an owner credential and weakened TLS',async()=>{assert.throws(()=>validateContainer({...base,DATABASE_URL:'PRIVATE_OWNER_CANARY'}));assert.throws(()=>validateContainer({...base,APP_DATABASE_URL:base.APP_DATABASE_URL.replace('verify-full','disable')}));});
+ await check('HTTP deployment requires an explicit loopback preview',async()=>{assert.throws(()=>validateContainer({...base,BETTER_AUTH_URL:'http://demo.example',FRAS_LOCAL_PREVIEW:'true'}));assert.throws(()=>validateContainer({...base,BETTER_AUTH_URL:'http://localhost:3001'}));validateContainer({...base,BETTER_AUTH_URL:'http://localhost:3001',FRAS_LOCAL_PREVIEW:'true'});});
+ await check('active biometric features require the original valid key',async()=>{assert.throws(()=>validateContainer({...base,ATTENDAI_BIOMETRICS_ENABLED:'true'}));validateContainer({...base,ATTENDAI_BIOMETRICS_ENABLED:'true',ATTENDAI_BIOMETRIC_KEY:Buffer.alloc(32,7).toString('base64')});assert.throws(()=>validateContainer({...base,ATTENDAI_VERIFICATION_TRIAL_ENABLED:'true'}));});
+ await check('private exporter preserves secret characters while excluding owner settings',async()=>{const p=join(temp,'container.env'),secret='private-$-${CANARY}-'.repeat(3);await exportContainerEnv({...base,BETTER_AUTH_SECRET:secret,DATABASE_URL:'PRIVATE_OWNER_CANARY',OTHER_SECRET:'PRIVATE_OTHER_CANARY'},'http://localhost:3001',p);const data=await readFile(p,'utf8');assert.ok(data.includes('BETTER_AUTH_SECRET='+secret+'\n'));assert.ok(!data.includes('PRIVATE_OWNER_CANARY'));assert.ok(!data.includes('PRIVATE_OTHER_CANARY'));assert.ok(data.includes('FRAS_LOCAL_PREVIEW=true'));await assert.rejects(exportContainerEnv(base,'https://demo.example',p),e=>e.code==='EEXIST');});
+ await check('runtime address upgrades verification without changing original input',async()=>{const input=base.APP_DATABASE_URL.replace('verify-full','require');assert.equal(new URL(runtimeAddress(input)).searchParams.get('sslmode'),'verify-full');assert.ok(input.endsWith('require'));});
+ await check('invalid ports and multiline secrets are rejected',async()=>{for(const port of ['80','0','65536','3000;bad'])assert.throws(()=>validateContainer({...base,PORT:port}));await assert.rejects(exportContainerEnv({...base,BETTER_AUTH_SECRET:'A'.repeat(48)+'\nBAD=VALUE'},'https://demo.example',join(temp,'invalid.env')));});
+ console.log(`Deployment checks passed: ${n}. Docker engine, live database and public host were not used.`);
+}finally{await db.close();await rm(temp,{recursive:true,force:true});}

@@ -1,5 +1,7 @@
 # Project name update
 
+This page records the completed initial name update. The one-time installer and its exact payload remain in [initial commit e54aa26](https://github.com/Aleem547/face-recognition-attendance-system/tree/e54aa26e06d1b75fba2f5f8408a628f5d2b7e687) and the original downloaded rename archive. They are retired from the deployment-preparation branch, whose source has since changed. The commands below refer to that initial archive; use [deployment preparation](deployment.md) for the current work.
+
 The current project name is **Face Recognition Attendance System**. This release applies that name to the application title and authentication display name, login, sidebar, navigation, camera pages, footer, download filenames, documentation, npm package, setup helper filenames, screenshots and source archive.
 
 ## Update the already configured Windows installation

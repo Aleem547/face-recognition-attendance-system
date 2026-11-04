@@ -1,0 +1,46 @@
+{
+  "schema": "fras-deployment-preparation-v1",
+  "date": "2026-11-04",
+  "baseCommit": "e54aa26e06d1b75fba2f5f8408a628f5d2b7e687",
+  "status": "components_verified_host_checks_pending",
+  "productionBuild": "passed",
+  "isolatedChecks": {
+    "clock_and_capture": {
+      "status": "passed",
+      "namedChecks": 16
+    },
+    "class_automation": {
+      "status": "passed",
+      "namedChecks": 25
+    },
+    "deployment_diagnostic_and_configuration": {
+      "status": "passed",
+      "namedChecks": 15
+    }
+  },
+  "hashedLinuxPythonDependencyInstall": "passed",
+  "publicModelDownloads": "four existing manifest hashes and sizes verified",
+  "nativeFaceEngine": {
+    "status": "passed",
+    "syntheticChecks": 3
+  },
+  "nativePadEngine": "both models loaded and synthetic smoke passed",
+  "nativeProcessMemory": {
+    "models": "face_and_pad_loaded",
+    "peakRssMiB": 172.5,
+    "scope": "single_native_process_synthetic_smoke_only"
+  },
+  "modelDownloaderUnitChecks": 4,
+  "composeYaml": "parsed and selected isolation settings checked; not executed by Docker",
+  "windowsPreparationHelper": "not_executed_on_Linux",
+  "dockerEngine": "unavailable_in_preparation_workspace",
+  "dockerImageBuild": "not_run",
+  "containerRuntime": "not_run",
+  "liveDatabase": "not_accessed",
+  "localClockWarningRootCause": "requires operator read-only diagnostic",
+  "databaseRepair": "not_applied",
+  "publicHost": "not_created",
+  "biometricReliability": "unvalidated",
+  "manualAcceptance": "previous deferred items unchanged",
+  "existingWindowsInstallation": "not_modified"
+}

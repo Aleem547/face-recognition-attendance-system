@@ -106,5 +106,12 @@
   "biometricReliability": "unvalidated",
   "manualAcceptance": "deferred items retain previous status",
   "githubPush": "not performed; repository destination not supplied",
-  "deployment": "excluded"
+  "deployment": "excluded",
+  "subsequentDeploymentPreparation": {
+    "status": "components_verified_host_checks_pending",
+    "report": "DEPLOYMENT_VALIDATION.json",
+    "liveDatabaseRepair": "not_applied",
+    "dockerImageBuild": "not_run",
+    "publicDeployment": "not_performed"
+  }
 }

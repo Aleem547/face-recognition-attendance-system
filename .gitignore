@@ -2,6 +2,7 @@
 .env
 .env.*
 !.env.example
+!.env.container.example
 .envrc
 .npmrc
 .pypirc
@@ -94,3 +95,12 @@ face-engine/pad/models/
 AttendAI_Private_Backups/
 AttendAI_Final_Evidence/
 .project-rename-backups/
+
+# Deployment secrets and local verification artifacts
+*.env
+deployment-reports/
+**/node_modules
+**/.venv*
+**/face-engine/models/
+**/face-engine/pad/models/
+*.part

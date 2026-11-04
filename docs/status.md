@@ -41,6 +41,8 @@ The current acceptance file from the Windows installation was not re-read after 
 
 ## Release boundary
 
+Deployment preparation adds a read-only clock diagnostic, safe failure codes and a Docker configuration for one Node/Python service. Its component checks are recorded in `DEPLOYMENT_VALIDATION.json`. The Docker image has not been built in this preparation workspace, which lacks a Docker engine. The cause of the local class-clock warning, container behavior and public-host operation remain unconfirmed until the corresponding checks run on their actual environments.
+
 The November 4 name update changes the current project title to **Face Recognition Attendance System**, including npm package metadata, UI copy, exports, documentation, setup helper names and synthetic screenshots. Compatibility identifiers for the existing database, configuration, cookies and inference protocols are retained. The name updater is source-only and performs a guarded rebuild; its own validation is recorded separately in `RELEASE_CHECK.json`.
 
 This release packages existing source and current documentation for review and portfolio use. It does not deploy the app, publish private data, alter the running Windows installation, change acceptance flags, or approve unattended real-world attendance decisions.

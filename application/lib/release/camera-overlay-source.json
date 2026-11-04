@@ -1,7 +1,7 @@
 {
   "schema": "attendai-camera-overlay-files-v1",
   "release": "live-comparison-2026-11-04",
-  "baselineDigest": "840124a47ac7c608bd6be8d8140b05f9a6d6202a74f522f35ccc4060ab6460b7",
+  "baselineDigest": "bbe159e8ef6d4a5743af1acdaf255893fb3e020029adc02097e0b5c6bcddb900",
   "files": {
     "app/template.tsx": "1158a81a9a4ac6580df459302b6f0a9578cb6d8490868249d48f19b9566e6e8f",
     "app/camera-overlay.css": "19c8a193799ccfd4aa0a13a6c820de495f584cfa7534d5ccb01af5bd61eebeec",

@@ -1,0 +1,22 @@
+services:
+  attendance:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: face-recognition-attendance-system:deployment-prep
+    platform: linux/amd64
+    env_file:
+      - path: ${FRAS_ENV_FILE:?Set FRAS_ENV_FILE to a private container environment file}
+        format: raw
+    ports:
+      - "127.0.0.1:3001:3000"
+    restart: unless-stopped
+    stop_grace_period: 35s
+    read_only: true
+    tmpfs:
+      - /tmp:uid=10001,gid=10001,mode=0700,size=64m
+      - /app/.next/cache:uid=10001,gid=10001,mode=0700,size=128m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

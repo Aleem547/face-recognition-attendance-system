@@ -6,7 +6,7 @@ A role-based attendance application with a persistent class register, frozen ses
 
 Built with **Next.js 15 · React 19 · TypeScript · PostgreSQL · Better Auth · Python/OpenCV**.
 
-**Status: working local research prototype.** Core register workflows have been demonstrated locally. Face matching and presentation attack detection (PAD) reliability remain unvalidated. Some manual acceptance scenarios are deferred, and public deployment is outside this release.
+**Status: working local research prototype.** Core register workflows have been demonstrated locally. Face matching and presentation attack detection (PAD) reliability remain unvalidated. Some manual acceptance scenarios are deferred. Docker deployment preparation is included; public hosting has not been created.
 
 ![Face Recognition Attendance System course analytics with synthetic records](assets/overview.png)
 
@@ -43,9 +43,11 @@ flowchart TD
 
 See [architecture](docs/architecture.md) for the data flow and [current status](docs/status.md) for evidence and remaining work.
 
+Docker preparation, private runtime configuration and clock diagnosis are described in [deployment](docs/deployment.md). `DEPLOYMENT_VALIDATION.json` distinguishes completed component checks from the pending Docker and live-host checks.
+
 ## Run locally
 
-**Already have the configured application?** Use the included `Install-ProjectRename.ps1` to apply the new name and rebuild your existing copy. See [name update](docs/rename.md). Finish any timed class and stop its server before running the updater.
+For container deployment preparation and the read-only class-clock diagnostic, see [deployment](docs/deployment.md). The completed one-time name update is documented in [name-update history](docs/rename.md).
 
 This repository contains the complete source in `application/`. Use **Node.js 24**, npm, and a dedicated PostgreSQL development database. The optional face engine uses **64-bit CPython 3.12** and a separate virtual environment.
 

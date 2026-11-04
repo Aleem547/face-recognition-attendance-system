@@ -1,0 +1,6 @@
+.live-comparison-card{margin:16px 0;padding:18px;border:1px solid #dce5f1;border-radius:14px;background:#f7f9fe;color:#152744;text-align:left}
+.live-comparison-card.is-running{border-color:#8dd8b5;background:#f2fbf6}
+.live-comparison-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.live-comparison-heading h3{font-size:16px;margin:0 0 4px}.live-comparison-heading p{font-size:12px;line-height:1.5;margin:0;color:#63748d}
+.live-comparison-pill{font-size:10px;font-weight:700;letter-spacing:.08em;background:#e6ecfa;border-radius:20px;padding:5px 8px;white-space:nowrap}.is-running .live-comparison-pill{color:#126a45;background:#d5f4e2}
+.live-comparison-score{display:flex;align-items:center;gap:15px;margin:18px 0 8px}.live-comparison-score output{font:700 36px/1.15 ui-monospace,monospace;letter-spacing:-.04em;min-width:5.3ch;color:#123b61}.live-comparison-score strong{display:block;font-size:12px}.live-comparison-score small{display:block;font-size:11px;color:#63748d;margin-top:4px}
+.live-comparison-status{font-size:12px;line-height:1.6;margin:8px 0 12px}.live-comparison-ack{margin:12px 0!important;font-size:12px!important}.live-comparison-footnote{font-size:11px;line-height:1.7;color:#687991;margin:12px 0 0}

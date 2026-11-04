@@ -1,0 +1,24 @@
+Face Recognition Attendance System PAD research adapter v1
+
+Third-party models and adapted crop geometry:
+Copyright 2020 Minivision. Licensed under Apache License, Version 2.0.
+Original: https://github.com/minivision-ai/Silent-Face-Anti-Spoofing
+Source commit: b6d5f04ad78778917853b25c778acef6d5626d15
+
+ONNX export and inference-contract source:
+https://github.com/yakhyo/face-anti-spoofing
+Source commit: 01a38903f4f2680bb59d32a994a6c7b5ae56f49b
+Release assets: weights (exact SHA-256 values in models.json).
+Apache-2.0 license copy: licenses/yakhyo-Apache-2.0.txt
+Original license copy: licenses/minivision-ai-Apache-2.0.txt
+
+Changes: new browser UI and loopback transport; bounds/integrity/cancellation
+checks; CPU OpenCV DNN adapter; original inclusive scale-and-shift crop retained;
+two raw class-1 components and their mean returned without an identity/liveness
+decision; quality measurements kept separate. No model weights were modified.
+
+No endorsement by Minivision, yakhyo or NIST is implied.
+
+Reports update v2.0.0: structured browser records, score-only JSON/static HTML exports,
+strict descriptive report generator, lifecycle cancellation recording and manually
+transcribed baseline added. Model binaries and inference adapter unchanged.

@@ -1,0 +1,11 @@
+# Face Recognition Attendance System — local completion release
+
+Use the existing Windows project and sign-in origin. This consolidated update includes accounts/permissions, durable registers, automatic class timing and experimental face check-in, corrections, session CSV, course analytics, optional labelled face/PAD research exports, private offline study scoring, calibration/evaluation, source backup/restore, a database backup helper and complete local acceptance/reporting instructions. Deployment is excluded.
+
+After the completion installer passes its checks, `npm run start` starts the locally built app. Keep the terminal running through automatic classes. Overview includes course analytics; Face check-in handles experimental attendance; Face comparison can export research observations. Comparison/enrollment alone does not mark attendance. Staff and manual fallback remain available.
+
+Start with [LOCAL_COMPLETION.md](docs/LOCAL_COMPLETION.md), then [RELIABILITY_STUDY.md](docs/RELIABILITY_STUDY.md), [RECOVERY.md](docs/RECOVERY.md), [PROJECT_STATUS.md](PROJECT_STATUS.md), [class timing](docs/AUTOMATIC_CLASS_TIMING.md) and [evaluation limits](docs/EVALUATION_LIMITS.md). Run `node scripts/release-check.mjs` to repeat the 20 isolated suites and production build. It does not test your real camera or modify the live database.
+
+The SFace/YuNet and MiniFASNet models are unchanged. Earlier phone-photo/genuine score overlap and motion timeouts remain unresolved. No validated operating cutoffs, accuracy claim, liveness guarantee or institutional approval is supplied. Research thresholds are never silently installed. Real Windows/browser/database recovery and representative biometric results must come from the documented local workflow. The final report preserves pending/failed outcomes rather than declaring the original reliable automatic-attendance goal complete.
+
+Existing environment settings, keys, dependency lockfile and records are preserved. Setup only applies/checks additive migrations 008/009 under its explicit option. Source restoration never rolls back the database. Keep private study material, keys and archives outside git; retain third-party licenses and the historical academic record accurately.

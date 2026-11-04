@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import vm from 'node:vm';
+import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+import {boundedFaces,projectFace,studentLabel} from '../lib/camera-overlay/geometry.ts';
+import {FaceTracker} from '../lib/camera-overlay/tracker.ts';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');let passed=0;
+async function test(name,fn){await fn();console.log(`PASS ${++passed}: ${name}`);}
+const box={x:.1,y:.2,width:.3,height:.4};
+await test('Mirrored preview positions a detected face on the correct side',()=>assert.deepEqual(projectFace(box,400,300,400,300),{x:240.00000000000003,y:60,width:119.99999999999997,height:120}));
+await test('Object-fit cover cropping is applied before projecting a box',()=>{const b=projectFace({x:.4,y:.3,width:.2,height:.2},640,360,400,300);assert.ok(Math.abs(b.x-146.66666666666663)<.001);assert.ok(Math.abs(b.width-106.66666666666669)<.001);});
+await test('Portrait video clips boxes to the visible preview bounds',()=>{const b=projectFace({x:.1,y:.01,width:.8,height:.8},300,600,400,300);assert.equal(b.y,0);assert.equal(b.height,300);});
+await test('Empty sizes, invalid coordinates and completely cropped faces are hidden',()=>{assert.equal(projectFace(box,0,300,400,300),null);assert.equal(projectFace({...box,x:NaN},400,300,400,300),null);assert.equal(projectFace({x:.1,y:0,width:.1,height:.05},300,600,400,100),null);});
+await test('Worker results are bounded, finite normalized face boxes',()=>{assert.deepEqual(boundedFaces([{...box,x:-1},box,{...box,width:Infinity}]),[box]);assert.deepEqual(boundedFaces(Array(9).fill(box)),[]);});
+const own={role:'student',student:{id:'own-id',display_name:'Demo student 1',student_code:'STU-001',is_active:true}};
+await test('Name labels require an active linked student and student role',()=>{assert.equal(studentLabel(own).name,'Demo student 1');assert.equal(studentLabel({...own,role:'admin'}),null);assert.equal(studentLabel({...own,student:{...own.student,is_active:false}}),null);assert.equal(studentLabel({...own,student:{...own.student,display_name:'bad\u0000name'}}),null);});
+function fixture(){let active=true,worker,sequence=0;const states=[],timers=new Map();const tracker=new FaceTracker({worker:()=>{worker={onmessage:null,onerror:null,sent:[],terminated:false,postMessage(message,transfer){this.sent.push({message,transfer});},terminate(){this.terminated=true;}};return worker;},active:()=>active,pixels:()=>({width:20,height:20,pixels:new ArrayBuffer(1600)}),state:s=>states.push(s),schedule:(fn,ms)=>{const id=++sequence;timers.set(id,{fn,ms});return id;},cancel:id=>timers.delete(id)});return {tracker,states,timers,get worker(){return worker;},setActive:v=>{active=v;},emit:message=>worker.onmessage?.({data:message}),run:ms=>{const t=[...timers].find(([,v])=>v.ms===ms);assert.ok(t,'expected timer '+ms);timers.delete(t[0]);t[1].fn();}};}
+await test('Worker startup waits for readiness before reading a frame',()=>{const f=fixture();f.tracker.start();assert.equal(f.states.at(-1).mode,'loading');assert.equal(f.worker.sent.length,0);f.emit({type:'ready'});assert.equal(f.worker.sent.length,1);f.tracker.dispose();});
+await test('Only one frame is in flight and repeated ready messages do not duplicate it',()=>{const f=fixture();f.tracker.start();f.emit({type:'ready'});f.emit({type:'ready'});assert.equal(f.worker.sent.length,1);assert.ok(![...f.timers.values()].some(t=>t.ms===250));f.tracker.dispose();});
+await test('Only downsampled pixels and frame coordinates enter the detector',()=>{const f=fixture();f.tracker.start();f.emit({type:'ready'});const {message,transfer}=f.worker.sent[0];assert.equal(Object.keys(message).sort().join(','),'height,id,pixels,type,width');assert.equal(transfer[0],message.pixels);f.tracker.dispose();});
+await test('One valid face shows a single tracking box',()=>{const f=fixture();f.tracker.start();f.emit({type:'ready'});f.emit({type:'faces',id:1,boxes:[box]});assert.deepEqual(f.states.at(-1),{mode:'tracking',boxes:[box]});f.tracker.dispose();});
+await test('Two faces produce a multiple-face state for anonymous warning boxes',()=>{const f=fixture();f.tracker.start();f.emit({type:'ready'});f.emit({type:'faces',id:1,boxes:[box,box]});assert.equal(f.states.at(-1).mode,'multiple');f.tracker.dispose();});
+await test('A lost face clears the previous box on the next result',()=>{const f=fixture();f.tracker.start();f.emit({type:'ready'});f.emit({type:'faces',id:1,boxes:[box]});f.run(250);f.emit({type:'faces',id:2,boxes:[]});assert.deepEqual(f.states.at(-1),{mode:'noface',boxes:[]});f.tracker.dispose();});
+await test('Stopping terminates the worker, clears all timers and removes boxes',()=>{const f=fixture();f.tracker.start();f.emit({type:'ready'});f.tracker.stop();assert.equal(f.worker.terminated,true);assert.equal(f.timers.size,0);assert.equal(f.states.at(-1).mode,'off');});
+await test('Late results from an earlier camera session are ignored',()=>{const f=fixture();f.tracker.start();const old=f.worker.onmessage;f.tracker.stop();const count=f.states.length;old({data:{type:'faces',id:1,boxes:[box]}});assert.equal(f.states.length,count);});
+await test('Hidden or inactive preview stops detection before reading another frame',()=>{const f=fixture();f.tracker.start();f.emit({type:'ready'});f.emit({type:'faces',id:1,boxes:[box]});f.setActive(false);f.run(250);assert.equal(f.worker.terminated,true);assert.equal(f.states.at(-1).mode,'off');});
+await test('Detector failure hides the guide without changing camera controls',()=>{const f=fixture();f.tracker.start();f.worker.onerror({});assert.equal(f.states.at(-1).mode,'unavailable');assert.equal(f.worker.terminated,true);});
+await test('Unresponsive frame detection times out and stops the worker',()=>{const f=fixture();f.tracker.start();f.emit({type:'ready'});f.run(5000);assert.equal(f.states.at(-1).mode,'unavailable');assert.equal(f.timers.size,0);});
+await test('Unresponsive detector startup times out',()=>{const f=fixture();f.tracker.start();f.run(10000);assert.equal(f.states.at(-1).mode,'unavailable');});
+await test('Disposed guides cannot restart',()=>{const f=fixture();f.tracker.start();f.tracker.dispose();const count=f.states.length;f.tracker.start();assert.equal(f.states.length,count);assert.equal(f.timers.size,0);});
+await test('Vendored detector and cascade match the reviewed upstream bytes',async()=>{for(const [name,expected]of Object.entries({'jsfeat-min.js':'974327515d68c91258efd3befa03622c41bbed8e3172771994604325799977a1','frontalface.js':'6662fa76580583b678f2c306422f27e8d1498fa84649be1314cdf7232b9dc461'})){assert.equal(createHash('sha256').update(await fs.readFile(path.join(root,'public/attendai-face-overlay',name))).digest('hex'),expected);}});
+await test('Real detector worker returns no faces for a blank image and clears its pixels',async()=>{
+ const directory=path.join(root,'public/attendai-face-overlay'),messages=[];
+ const scripts=new Map(await Promise.all(['jsfeat-min.js','frontalface.js'].map(async n=>[n,await fs.readFile(path.join(directory,n),'utf8')])));
+ const sandbox={ArrayBuffer,Uint8Array,Uint8ClampedArray,Int32Array,Float32Array,Float64Array,console};sandbox.self=sandbox;sandbox.postMessage=v=>messages.push(v);const context=vm.createContext(sandbox);
+ sandbox.importScripts=(...names)=>{for(const n of names)vm.runInContext(scripts.get(n.replace('./','')),context);};
+ vm.runInContext(await fs.readFile(path.join(directory,'detector-worker.js'),'utf8'),context);assert.equal(messages[0].type,'ready');
+ const pixels=new Uint8ClampedArray(64*64*4);pixels.fill(255);sandbox.onmessage({data:{type:'frame',id:7,width:64,height:64,pixels:pixels.buffer}});
+ assert.equal(messages.at(-1).type,'faces');assert.equal(messages.at(-1).id,7);assert.equal(messages.at(-1).boxes.length,0);assert.equal(pixels.every(v=>v===0),true);
+});
+console.log(`Camera overlay checks passed: ${passed}. Physical camera validation still requires the local preview.`);

@@ -1,0 +1,3 @@
+# Preserve reviewed bytes and checksum manifests on every platform.
+* -text
+*.png binary

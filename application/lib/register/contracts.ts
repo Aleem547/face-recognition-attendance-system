@@ -1,0 +1,11 @@
+export type StudentRow = { id: string; student_code: string; display_name: string; user_id: string | null; is_active: boolean };
+export type CourseRow = { id: string; course_code: string; title: string; teacher_id: string; teacher_name: string; is_active: boolean };
+export type SessionRow = { id: string; session_code: string; course_id: string; course_code: string; title: string; starts_at: string; ends_at: string; state: "scheduled" | "open" | "closed" | "cancelled" };
+export type EnrollmentRow = { student_id: string; student_code: string; display_name: string; is_active: boolean };
+export type MarkStatus = "present" | "absent" | "late" | "excused";
+export type RegisterRow = { student_id: string; student_code: string; display_name: string; attendance_id: string | null; status: MarkStatus | null; method: "manual" | "experimental_face" | "automatic_absence" | null; revision: number | null; updated_at: string | null; change_reason: string | null };
+export type ReceiptRow = { event_id: string; revision: number; action: string; previous_status: string | null; new_status: string; method: "manual" | "experimental_face" | "automatic_absence"; actor_name: string; reason: string; occurred_at: string };
+export type Page<T> = { items: T[]; nextCursor: string | null };
+export type Summary = { students: number; courses: number; sessions: number; marks: number };
+export type RegisterSummary = { roster: number; present: number; absent: number; late: number; excused: number; unmarked: number };
+export type RegisterPage = Page<RegisterRow> & { session: SessionRow; summary: RegisterSummary };

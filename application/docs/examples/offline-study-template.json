@@ -1,0 +1,77 @@
+{
+  "schema": "attendai-offline-study-v1",
+  "consentConfirmed": false,
+  "split": "development",
+  "observations": [
+    {
+      "id": "D01_attempt01",
+      "subjectId": "D01",
+      "referenceSubjectId": "D01",
+      "sessionId": "D01_day2",
+      "referenceSessionId": "D01_enroll",
+      "cameraId": "laptop_cam",
+      "lighting": "normal",
+      "presentation": "genuine",
+      "attackInstrumentId": null,
+      "capturedAt": "2026-11-02T00:00:00.000Z",
+      "referenceImage": "images/D01_reference.jpg",
+      "probeImage": "images/genuine_presentation.jpg"
+    },
+    {
+      "id": "D01_attempt02",
+      "subjectId": "D02",
+      "referenceSubjectId": "D01",
+      "sessionId": "D02_day2",
+      "referenceSessionId": "D01_enroll",
+      "cameraId": "laptop_cam",
+      "lighting": "normal",
+      "presentation": "impostor",
+      "attackInstrumentId": null,
+      "capturedAt": "2026-11-02T00:00:00.000Z",
+      "referenceImage": "images/D01_reference.jpg",
+      "probeImage": "images/impostor_presentation.jpg"
+    },
+    {
+      "id": "D01_attempt03",
+      "subjectId": "D01",
+      "referenceSubjectId": "D01",
+      "sessionId": "D01_day2",
+      "referenceSessionId": "D01_enroll",
+      "cameraId": "laptop_cam",
+      "lighting": "normal",
+      "presentation": "printed_photo",
+      "attackInstrumentId": "instrument_printed_photo",
+      "capturedAt": "2026-11-02T00:00:00.000Z",
+      "referenceImage": "images/D01_reference.jpg",
+      "probeImage": "images/printed_photo_presentation.jpg"
+    },
+    {
+      "id": "D01_attempt04",
+      "subjectId": "D01",
+      "referenceSubjectId": "D01",
+      "sessionId": "D01_day2",
+      "referenceSessionId": "D01_enroll",
+      "cameraId": "laptop_cam",
+      "lighting": "normal",
+      "presentation": "phone_photo",
+      "attackInstrumentId": "instrument_phone_photo",
+      "capturedAt": "2026-11-02T00:00:00.000Z",
+      "referenceImage": "images/D01_reference.jpg",
+      "probeImage": "images/phone_photo_presentation.jpg"
+    },
+    {
+      "id": "D01_attempt05",
+      "subjectId": "D01",
+      "referenceSubjectId": "D01",
+      "sessionId": "D01_day2",
+      "referenceSessionId": "D01_enroll",
+      "cameraId": "laptop_cam",
+      "lighting": "normal",
+      "presentation": "video_replay",
+      "attackInstrumentId": "instrument_video_replay",
+      "capturedAt": "2026-11-02T00:00:00.000Z",
+      "referenceImage": "images/D01_reference.jpg",
+      "probeImage": "images/video_replay_presentation.jpg"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+Face Recognition Attendance System camera positioning overlay
+
+Preview frames are processed in a same-origin browser worker. No additional
+image upload, face enrollment, identification request, or camera stream is
+started by this overlay. The label comes from the signed-in student's existing
+authorized account record. A detection box is only a visual positioning guide;
+it is not a recognition, identity, liveness, PAD, or attendance decision.
+
+JSFeat and the bundled frontal-face cascade are vendored from:
+https://github.com/inspirit/jsfeat/tree/4c7b336bbeeb26e6cd4cdf3c7d414abe273846f3
+build/jsfeat-min.js and cascades/frontalface.js
+JSFeat copyright 2012 Eugene Zatepyakin, MIT license: LICENSE-jsfeat.txt.
+Classifier derived from js-objectdetect / OpenCV classifiers. Preserve the
+upstream LICENSE-objectdetect.txt and CLASSIFIER-LICENSES.txt notices.
+https://github.com/mtschirs/js-objectdetect
+
+The detector assets are served locally by Face Recognition Attendance System; no runtime external CDN,
+third-party API, new paid service, or additional npm dependency is used.

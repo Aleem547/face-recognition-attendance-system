@@ -1,0 +1,110 @@
+{
+  "schema": "project-name-release-check-v1",
+  "date": "2026-11-04",
+  "projectName": "Face Recognition Attendance System",
+  "status": "passed",
+  "scope": "project_name_update_and_source_release",
+  "sourceFiles": 190,
+  "installedNamePayloadFiles": 55,
+  "productionBuild": {
+    "status": "passed",
+    "command": "npm run build",
+    "nextVersion": "15.5.28",
+    "nodeVersion": "24.22.1"
+  },
+  "regressionSuites": {
+    "auth": {
+      "status": "passed",
+      "namedChecks": 26
+    },
+    "camera": {
+      "status": "passed",
+      "namedChecks": 21
+    },
+    "liveComparison": {
+      "status": "passed",
+      "namedChecks": 45
+    }
+  },
+  "packaging": {
+    "status": "passed",
+    "checks": 16,
+    "cases": [
+      "packaged source and release checksum verification",
+      "matching installed source exports successfully",
+      "environment, image, backup and unlisted canaries excluded",
+      "original installation private configuration preserved",
+      "changed source refused before output creation",
+      "missing source refused before output creation",
+      "source file symlink refused",
+      "source directory symlink refused",
+      "BOM/CRLF normalized only to the canonical hash",
+      "existing output refused and preserved",
+      "output nested in the running source refused",
+      "modified release template refused",
+      "manifest path traversal and absolute paths refused",
+      "Git ignore rules exclude representative private/generated files",
+      "exact publishing allowlist stages without private canaries",
+      "isolated Git workflow creates exactly one initial commit"
+    ],
+    "sourceFiles": 190,
+    "releaseFiles": 215,
+    "privateCanariesPublished": false,
+    "originalInstallationChanged": false,
+    "remotePushPerformed": false,
+    "powerShellExecution": "not_run; PowerShell is unavailable on this host"
+  },
+  "renameUpdater": {
+    "status": "passed",
+    "checks": 16,
+    "cases": [
+      "recognized installation renamed and rebuilt",
+      "sidebar, navigation, footer and download branding updated",
+      "package name changed while local scripts and dependency metadata preserved",
+      "original private environment retained byte-for-byte",
+      "private source backup and receipt exclude configuration files",
+      "setup helpers renamed without stale duplicate files",
+      "second installation is idempotent without another build",
+      "failed build restores source, package metadata and previous production build",
+      "failed build restores renamed helper paths",
+      "unknown source edits stop installation before writes or backups",
+      "linked source files refused",
+      "missing expected source refused",
+      "canonical BOM and CRLF differences accepted safely",
+      "active 127.0.0.1 server blocks source changes",
+      "active ::1 server blocks source changes",
+      "linked production build refused while original source stays intact"
+    ],
+    "physicalCameraOpened": false,
+    "liveDatabaseAccess": false,
+    "environmentPreserved": true,
+    "buildFailureRollback": true,
+    "powerShellWrapper": "not_executed; host is Linux"
+  },
+  "browser": {
+    "status": "passed",
+    "projectName": "Face Recognition Attendance System",
+    "desktopAndMobileBranding": true,
+    "noHorizontalOverflow": true,
+    "loginBranding": true,
+    "browser": "157.0.8103.38",
+    "syntheticData": true,
+    "physicalCameraOpened": false,
+    "liveDatabaseUsed": false,
+    "javaScriptErrors": [],
+    "images": [
+      "overview.png",
+      "register.png"
+    ]
+  },
+  "documentationLinks": "passed",
+  "oldDisplayBrandingAudit": "passed; compatibility identifiers and original-source hashes retained",
+  "dependencyChange": "package name metadata only; versions and integrity values unchanged",
+  "liveWindowsInstallation": "update supplied; not changed remotely",
+  "liveDatabaseAccess": "none",
+  "physicalCameraValidation": "not repeated",
+  "biometricReliability": "unvalidated",
+  "manualAcceptance": "deferred items retain previous status",
+  "githubPush": "not performed; repository destination not supplied",
+  "deployment": "excluded"
+}

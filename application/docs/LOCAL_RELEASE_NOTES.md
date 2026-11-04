@@ -1,0 +1,9 @@
+# Final local completion release
+
+This release builds on Class Automation and accepts the known Consolidated, Automatic Checkin and Class Automation baselines. It adds course analytics, labelled same-frame research observation exports, a private separately consented offline JPEG scorer, a frozen development candidate/evaluation workflow with strict split/model checks, explicit failure denominators, private database backup helper, local acceptance records and a final report. It corrects stale guide/status text without rewriting historical research results.
+
+No new dependency, environment setting or database schema migration is added beyond the already delivered additive 008/009 setup. Accounts, current template keys and attendance remain in the configured database. Unknown source edits stop preflight. Source backups and restores preserve later edits and exclude credentials, dependencies and private evidence. Existing version 0.6.0 remains compatible with native setup checks.
+
+The 20-suite runner tests software fixtures then builds. The actual host results are in the top-level validation record. Native readiness in the installed runner checks existing models with synthetic input; it is not a physical camera result. Study exports are optional local downloads: no image/embedding/account identity is exported, but pseudonymous labels/scores remain private research data. Browser own-account comparisons cannot establish impostor error rates. Offline scoring is a separate authorized protocol and does not establish browser provenance.
+
+PAD models and thresholds are not improved or validated by this release. The earlier overlapped pilot remains a blocker to claiming reliable anti-spoofing. Real representative testing, recovery and an approved operating policy remain evidence-dependent. Deployment is excluded. The final report intentionally records this boundary; it cannot grant full project/biometric approval automatically.

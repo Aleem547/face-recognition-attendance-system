@@ -1,0 +1,3 @@
+// Synthetic transport fixture; never used by the application.
+let input=Buffer.alloc(0);process.stdout.write(JSON.stringify({type:'ready',modelVersion:'sface2021dec-yunet2023mar-v1'})+'\n');
+process.stdin.on('data',chunk=>{input=Buffer.concat([input,chunk]);while(input.length>=4){const length=input.readUInt32BE(0);if(input.length<length+4)return;const frame=input.subarray(4,length+4),mode=frame[0];input=Buffer.from(input.subarray(length+4));if(mode===2)continue;if(mode===0){process.stdout.write(JSON.stringify({type:'result',ok:false,code:'no_face'})+'\n');continue;}const embedding=Array(128).fill(1/Math.sqrt(128));if(mode===3)embedding[0]=100;process.stdout.write(JSON.stringify({type:'result',ok:true,modelVersion:'sface2021dec-yunet2023mar-v1',embedding})+'\n');}});

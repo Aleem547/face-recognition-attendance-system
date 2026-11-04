@@ -1,0 +1,229 @@
+{
+  "purpose": "Synthetic UI illustration only; not evaluation evidence",
+  "account": "Demo administrator",
+  "summary": {
+    "students": 4,
+    "courses": 1,
+    "sessions": 3,
+    "marks": 12
+  },
+  "students": {
+    "items": [
+      {
+        "id": "00000000-0000-4000-8000-000000000020",
+        "student_code": "DEMO-001",
+        "display_name": "Demo student 1",
+        "user_id": "00000000-0000-4000-8000-000000000030",
+        "is_active": true
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000021",
+        "student_code": "DEMO-002",
+        "display_name": "Demo student 2",
+        "user_id": "00000000-0000-4000-8000-000000000031",
+        "is_active": true
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000022",
+        "student_code": "DEMO-003",
+        "display_name": "Demo student 3",
+        "user_id": "00000000-0000-4000-8000-000000000032",
+        "is_active": true
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000023",
+        "student_code": "DEMO-004",
+        "display_name": "Demo student 4",
+        "user_id": "00000000-0000-4000-8000-000000000033",
+        "is_active": true
+      }
+    ],
+    "nextCursor": null
+  },
+  "courses": {
+    "items": [
+      {
+        "id": "00000000-0000-4000-8000-000000000010",
+        "course_code": "CS-101",
+        "title": "Computer Science",
+        "teacher_id": "00000000-0000-4000-8000-000000000002",
+        "teacher_name": "Demo teacher",
+        "is_active": true
+      }
+    ],
+    "nextCursor": null
+  },
+  "sessions": {
+    "items": [
+      {
+        "id": "00000000-0000-4000-8000-000000000040",
+        "session_code": "DEMO-CLASS-03",
+        "course_id": "00000000-0000-4000-8000-000000000010",
+        "course_code": "CS-101",
+        "title": "Computer Science · Class 3",
+        "starts_at": "2026-11-03T10:00:00.000Z",
+        "ends_at": "2026-11-03T11:00:00.000Z",
+        "state": "closed"
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000041",
+        "session_code": "DEMO-CLASS-02",
+        "course_id": "00000000-0000-4000-8000-000000000010",
+        "course_code": "CS-101",
+        "title": "Computer Science · Class 2",
+        "starts_at": "2026-11-02T10:00:00.000Z",
+        "ends_at": "2026-11-02T11:00:00.000Z",
+        "state": "closed"
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000042",
+        "session_code": "DEMO-CLASS-01",
+        "course_id": "00000000-0000-4000-8000-000000000010",
+        "course_code": "CS-101",
+        "title": "Computer Science · Class 1",
+        "starts_at": "2026-11-01T10:00:00.000Z",
+        "ends_at": "2026-11-01T11:00:00.000Z",
+        "state": "closed"
+      }
+    ],
+    "nextCursor": null
+  },
+  "enrollments": {
+    "items": [
+      {
+        "id": "00000000-0000-4000-8000-000000000020",
+        "student_code": "DEMO-001",
+        "display_name": "Demo student 1",
+        "user_id": "00000000-0000-4000-8000-000000000030",
+        "is_active": true,
+        "student_id": "00000000-0000-4000-8000-000000000020"
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000021",
+        "student_code": "DEMO-002",
+        "display_name": "Demo student 2",
+        "user_id": "00000000-0000-4000-8000-000000000031",
+        "is_active": true,
+        "student_id": "00000000-0000-4000-8000-000000000021"
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000022",
+        "student_code": "DEMO-003",
+        "display_name": "Demo student 3",
+        "user_id": "00000000-0000-4000-8000-000000000032",
+        "is_active": true,
+        "student_id": "00000000-0000-4000-8000-000000000022"
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000023",
+        "student_code": "DEMO-004",
+        "display_name": "Demo student 4",
+        "user_id": "00000000-0000-4000-8000-000000000033",
+        "is_active": true,
+        "student_id": "00000000-0000-4000-8000-000000000023"
+      }
+    ],
+    "nextCursor": null
+  },
+  "register": {
+    "items": [
+      {
+        "id": "00000000-0000-4000-8000-000000000020",
+        "student_code": "DEMO-001",
+        "display_name": "Demo student 1",
+        "user_id": "00000000-0000-4000-8000-000000000030",
+        "is_active": true,
+        "student_id": "00000000-0000-4000-8000-000000000020",
+        "attendance_id": "00000000-0000-4000-8000-000000000060",
+        "status": "present",
+        "method": "manual",
+        "revision": 1,
+        "updated_at": "2026-11-03T11:05:00.000Z",
+        "change_reason": "Manual attendance recorded by staff."
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000021",
+        "student_code": "DEMO-002",
+        "display_name": "Demo student 2",
+        "user_id": "00000000-0000-4000-8000-000000000031",
+        "is_active": true,
+        "student_id": "00000000-0000-4000-8000-000000000021",
+        "attendance_id": "00000000-0000-4000-8000-000000000061",
+        "status": "present",
+        "method": "manual",
+        "revision": 2,
+        "updated_at": "2026-11-03T11:05:00.000Z",
+        "change_reason": "Synthetic correction example"
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000022",
+        "student_code": "DEMO-003",
+        "display_name": "Demo student 3",
+        "user_id": "00000000-0000-4000-8000-000000000032",
+        "is_active": true,
+        "student_id": "00000000-0000-4000-8000-000000000022",
+        "attendance_id": "00000000-0000-4000-8000-000000000062",
+        "status": "late",
+        "method": "manual",
+        "revision": 1,
+        "updated_at": "2026-11-03T11:05:00.000Z",
+        "change_reason": "Manual attendance recorded by staff."
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000023",
+        "student_code": "DEMO-004",
+        "display_name": "Demo student 4",
+        "user_id": "00000000-0000-4000-8000-000000000033",
+        "is_active": true,
+        "student_id": "00000000-0000-4000-8000-000000000023",
+        "attendance_id": "00000000-0000-4000-8000-000000000063",
+        "status": "excused",
+        "method": "manual",
+        "revision": 1,
+        "updated_at": "2026-11-03T11:05:00.000Z",
+        "change_reason": "Manual attendance recorded by staff."
+      }
+    ],
+    "nextCursor": null,
+    "session": {
+      "id": "00000000-0000-4000-8000-000000000040",
+      "session_code": "DEMO-CLASS-03",
+      "course_id": "00000000-0000-4000-8000-000000000010",
+      "course_code": "CS-101",
+      "title": "Computer Science · Class 3",
+      "starts_at": "2026-11-03T10:00:00.000Z",
+      "ends_at": "2026-11-03T11:00:00.000Z",
+      "state": "closed"
+    },
+    "summary": {
+      "roster": 4,
+      "present": 2,
+      "late": 1,
+      "absent": 0,
+      "excused": 1,
+      "unmarked": 0
+    }
+  },
+  "analytics": {
+    "items": [
+      {
+        "course_id": "00000000-0000-4000-8000-000000000010",
+        "course_code": "CS-101",
+        "title": "Computer Science",
+        "sessions": 3,
+        "roster_entries": 12,
+        "present": 8,
+        "late": 2,
+        "absent": 1,
+        "excused": 1,
+        "unmarked": 0,
+        "manual": 12,
+        "experimental_face": 0,
+        "automatic_absence": 0,
+        "denominator": 11,
+        "attendance_rate": 90.91
+      }
+    ],
+    "nextCursor": null
+  }
+}

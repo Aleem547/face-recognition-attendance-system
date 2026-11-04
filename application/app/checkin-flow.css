@@ -1,0 +1,5 @@
+.camera-shell .register-alert.warning{background:#fff8e6;border:1px solid #e9ca78;color:#705116}
+.camera-shell .register-alert p{margin:9px 0;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+.camera-shell .register-alert strong{display:block;font-size:15px;line-height:1.5}
+.camera-shell .register-alert .btn{display:inline-flex;margin:8px 10px 0 0;white-space:normal}
+.camera-shell .register-alert .mono{overflow-wrap:anywhere}

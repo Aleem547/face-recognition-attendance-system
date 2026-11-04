@@ -1,0 +1,31 @@
+{
+  "schema": "attendai-camera-overlay-files-v1",
+  "release": "live-comparison-2026-11-04",
+  "baselineDigest": "840124a47ac7c608bd6be8d8140b05f9a6d6202a74f522f35ccc4060ab6460b7",
+  "files": {
+    "app/template.tsx": "1158a81a9a4ac6580df459302b6f0a9578cb6d8490868249d48f19b9566e6e8f",
+    "app/camera-overlay.css": "19c8a193799ccfd4aa0a13a6c820de495f584cfa7534d5ccb01af5bd61eebeec",
+    "components/camera-face-overlay.tsx": "f4502dca98c6d06207c0ebd0b5d4dad83ff359de7e660d9730c66fa312d19abe",
+    "lib/camera-overlay/geometry.ts": "c36828802950e8fb648c0b5c5944823063e20008b886a850c80faec2dc19b446",
+    "lib/camera-overlay/tracker.ts": "3af9736b741c829be09d875ac77b04b6a320d235f22dc5bdcb207e8b09af28d7",
+    "tests/camera-overlay.mjs": "b2404de1f0cb82f1ec5aeb6f1ef68f051a359a81c970b60d9284f4d9bede2c45",
+    "public/attendai-face-overlay/detector-worker.js": "6ffa13ee31d737f23500714663e9d702ba9664cf73890c0549ae3382998699d2",
+    "public/attendai-face-overlay/jsfeat-min.js": "974327515d68c91258efd3befa03622c41bbed8e3172771994604325799977a1",
+    "public/attendai-face-overlay/frontalface.js": "6662fa76580583b678f2c306422f27e8d1498fa84649be1314cdf7232b9dc461",
+    "public/attendai-face-overlay/LICENSE-jsfeat.txt": "20c20cb25e05181e3b6c7d68814a3484858422d6fb3745a3a75787256d30cc72",
+    "public/attendai-face-overlay/LICENSE-objectdetect.txt": "b5e7a5573268fa5b034a47dceb36f9d3ed5c8af28f41e4d9f9e8e451d4489f86",
+    "public/attendai-face-overlay/CLASSIFIER-LICENSES.txt": "9fa4d3c0f89144e20431ff07ac6ee13ee9c8307b08d483921610348ae04a1264",
+    "public/attendai-face-overlay/NOTICE.txt": "9a74dd73b6f124bf944cc1990d2d76e0c33a98cd32ddfac671ca9f13d5f67ac6",
+    "app/live-comparison.css": "828519355303c71b6e031e3fd4e04bc4b52175af11cbf4eebf4fd17377805a04",
+    "app/api/live-comparison/route.ts": "e8977158663428e21b3a2dc4df44f49ec7fa121d7971fb650e4049f9d87e8dfe",
+    "components/camera-live-comparison.tsx": "7113204b576b40fc63d3e922fbda4645ba641db9cf78637dafd5f580aa38e7ab",
+    "lib/live-comparison/leases.ts": "b01896156497cb86f389b5032150baa0b1c1e4ade98cfd419f2b0a55992a711d",
+    "lib/live-comparison/reference.ts": "9a2d59cced484f36cc9119c0482b2e22ca06c70c6e4a47e99493e7410e1a15c3",
+    "lib/live-comparison/worker.ts": "11241dde8f884d2c8c9463ea00016cef919f34e7329e2142333162fe9efd4632",
+    "lib/live-comparison/client.ts": "5554f9aa5cff8e3894147953ab5a3537395457ccccf45fb69cffa1511de7207f",
+    "face-engine/live.py": "1fca14dec2cd7f94f5fb7c830b64169c46cad509e102650a3eb44bed64f54c31",
+    "face-engine/tests/test_live_protocol.py": "016ed3d012592e8cb2fd67734a9f8e2542ea77ab71c6d76d7617e7479c3e6dce",
+    "tests/live-comparison.mjs": "106dd7ffc3f5ee450f9c66d654a3044f558e90b5556b1a0091658905d5d569a9",
+    "tests/fixtures/live-worker-child.mjs": "0e73bca76418adeaf96615cc641863dcb8748d5a488afd06f1fe3f1eb63fbc86"
+  }
+}

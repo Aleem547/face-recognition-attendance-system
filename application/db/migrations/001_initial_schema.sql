@@ -1,8 +1,3 @@
--- Face Recognition Attendance System: database foundation, migration 001.
--- Run ONCE in the Neon development branch, using the database owner.
--- PostgreSQL 15+. No extensions, passwords, face data, or demo rows are added.
--- If attendai already exists, STOP: do not drop it to rerun this migration.
-
 BEGIN;
 SET LOCAL lock_timeout = '5s';
 SET LOCAL statement_timeout = '30s';

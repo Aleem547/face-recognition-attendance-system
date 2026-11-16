@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { Fingerprint, LockKeyhole } from "lucide-react";
 
 export default function AuthScreen({ title, description, children, registration = false }: {
@@ -17,6 +18,7 @@ export default function AuthScreen({ title, description, children, registration 
       <div className="auth-lock"><LockKeyhole size={25}/></div>
       <p className="eyebrow">{registration ? "JOIN YOUR CLASSROOM" : "WELCOME BACK"}</p>
       <h2>{title}</h2><p className="auth-description">{description}</p>
+      <Link className="auth-demo-entry" href="/demo"><strong>Try recruiter demo <span aria-hidden="true">↗</span></strong><span>Explore all features with sample data. No account or approval needed.</span></Link>
       {children}
       <p className="auth-stage-note">Staff attendance and optional experimental face check-in. Camera use is a separate choice.</p>
     </section>

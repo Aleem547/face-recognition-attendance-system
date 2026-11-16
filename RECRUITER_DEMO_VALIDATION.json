@@ -1,0 +1,28 @@
+{
+  "schema": "fras-recruiter-demo-validation-v1",
+  "date": "2026-11-16",
+  "baseBranch": "render-free-20261104200805440",
+  "baseCommit": "cf335e474e34649e7a0b21076a48d0ce27a55e1f",
+  "demoWorkspace": {"status":"passed","namedChecks":20,"scope":"independent synthetic stores; existing form contracts, role scope, roster snapshots, corrections, exports, analytics, timing and restore"},
+  "demoCameraEndpoints": {"status":"passed","namedChecks":17,"scope":"actual HTTP, cryptography, quotas and cancellation; extraction injected with normalized synthetic vectors and valid PAD fixtures"},
+  "existingAuthentication": {"status":"passed","namedChecks":26,"existingDatabaseIntegrityAssertions":23},
+  "persistentAttendance": {"status":"passed","namedChecks":32},
+  "courseAnalytics": {"status":"passed","namedChecks":7},
+  "cameraLifecycle": {"status":"passed","namedChecks":18},
+  "namedChecksTotal":120,
+  "typescript": {"status":"passed","scope":"standalone typecheck and final production build type validation"},
+  "productionBuild": {"status":"passed","command":"npm run build","nextVersion":"15.5.28","demoFirstLoadJs":"149 kB"},
+  "browserQA": {
+    "status":"passed",
+    "environment":"isolated Next.js preview of actual demo components, without private database settings; preview root redirects to /demo",
+    "actions":["opened demo without an account or approval","created a sample student","recorded attendance","corrected a mark with a reason and saw revision history","downloaded a session CSV","switched to a student role and saw only the student's record with no edit controls","ran a sample late arrival at the 15-minute cutoff","advanced demo clock and observed automatic absence while prior marks were preserved","reset sample data","verified camera/capture controls require explicit choices","checked feature tour in a 390-pixel phone frame"],
+    "phoneDocumentWidth":375,
+    "phoneScrollWidth":375
+  },
+  "humanCameraFramesProcessedDuringPreparation":false,
+  "biometricAccuracyEvaluation":"not_performed; fixture and scenario outputs are not biometric performance evidence",
+  "liveDatabaseChanges":"not_performed; update requires no migration",
+  "githubPublication":"not_performed_in_preparation_workspace",
+  "renderDeployment":"not_performed_in_preparation_workspace",
+  "privateConfiguration":"not_accessed; existing host secret is used only by the deployed camera routes"
+}

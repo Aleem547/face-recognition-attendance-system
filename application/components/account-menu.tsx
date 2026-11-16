@@ -30,10 +30,11 @@ export function SignOutButton() {
   </span>;
 }
 
-export default function AccountMenu({ account }: { account: Account }) {
+export default function AccountMenu({ account, demo = false }: { account: Account; demo?: boolean }) {
   return <div className="account-menu">
     <span className="account-label"><strong>{account.displayName}</strong><small>{account.role}</small></span>
-    {account.role === "admin" && <Link className="small-button" href="/admin">Admin panel</Link>}
-    <SignOutButton/>
+    {!demo && <Link className="small-button" href="/demo">Try demo</Link>}
+    {account.role === "admin" && <Link className="small-button" href={demo ? "/demo?view=admin" : "/admin"}>Admin panel</Link>}
+    {demo ? <Link className="small-button" href="/login">Exit demo</Link> : <SignOutButton/>}
   </div>;
 }

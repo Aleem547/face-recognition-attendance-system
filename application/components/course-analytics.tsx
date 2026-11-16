@@ -1,17 +1,19 @@
 "use client";
 import {useCallback,useEffect,useState} from 'react';
+import type {WorkspaceTransport} from '@/lib/demo/store';
 import type {CourseAnalytics} from '@/lib/register/analytics';
 import {csvCell} from '@/lib/register/csv';
 type Result={items:CourseAnalytics[];nextCursor:string|null};
-async function read(cursor:string|null):Promise<Result>{
+async function readLive(cursor:string|null):Promise<Result>{
   const response=await fetch('/api/workspace?'+new URLSearchParams({resource:'analytics',...(cursor?{cursor}:{})}),{cache:'no-store'});
   if(!response.ok)throw Error('Analytics could not be loaded. Refresh your signed-in workspace.');
   return response.json();
 }
-export default function CourseAnalyticsPanel(){
+export default function CourseAnalyticsPanel({transport}:{transport?:WorkspaceTransport}){
+  const read=useCallback((cursor:string|null):Promise<Result>=>transport?transport<Result>({resource:"analytics",...(cursor?{cursor}:{})}):readLive(cursor),[transport]);
   const [data,setData]=useState<Result>({items:[],nextCursor:null}),[error,setError]=useState(''),[busy,setBusy]=useState(false);
-  const load=useCallback(async()=>{setBusy(true);setError('');try{setData(await read(null));}catch(e){setError((e as Error).message);}finally{setBusy(false);}},[]);
-  useEffect(()=>{let active=true;setBusy(true);void read(null).then(value=>{if(active)setData(value);}).catch(()=>{if(active)setError('Analytics unavailable. Refresh to retry.');}).finally(()=>{if(active)setBusy(false);});return()=>{active=false;};},[]);
+  const load=useCallback(async()=>{setBusy(true);setError('');try{setData(await read(null));}catch(e){setError((e as Error).message);}finally{setBusy(false);}},[read]);
+  useEffect(()=>{let active=true;setBusy(true);void read(null).then(value=>{if(active)setData(value);}).catch(()=>{if(active)setError('Analytics unavailable. Refresh to retry.');}).finally(()=>{if(active)setBusy(false);});return()=>{active=false;};},[read]);
   async function more(){if(busy||!data.nextCursor)return;setBusy(true);setError('');try{const value=await read(data.nextCursor);setData(previous=>({items:[...previous.items,...value.items],nextCursor:value.nextCursor}));}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
   async function exportAll(){
     if(busy)return;setBusy(true);setError('');

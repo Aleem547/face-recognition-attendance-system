@@ -6,14 +6,15 @@ import { useCallback, useEffect, useRef, useState, type FormEvent } from "react"
 import { Activity, ArrowDownToLine, BookOpen, CheckCheck, ClipboardCheck, Fingerprint, GraduationCap, History, LayoutDashboard, Menu, RefreshCw, ShieldCheck, Users, X } from "lucide-react";
 import AccountMenu from "@/components/account-menu";
 import type { Account } from "@/lib/auth/identity";
+import type { WorkspaceTransport } from "@/lib/demo/store";
 import type { CourseRow, EnrollmentRow, Page, ReceiptRow, RegisterPage, RegisterRow, SessionRow, StudentRow, Summary } from "@/lib/register/contracts";
 import { registerCsv } from "@/lib/register/csv";
 import { selectedSessionId } from "@/lib/checkin/outcome";
 
-type Section = "overview" | "students" | "courses" | "sessions" | "attendance" | "privacy";
+export type Section = "overview" | "students" | "courses" | "sessions" | "attendance" | "privacy";
 type HistoryPage = { items: ReceiptRow[]; beforeRevision: number | null };
 const emptyPage = <T,>(): Page<T> => ({ items: [], nextCursor: null });
-async function api<T>(params: Record<string, string>, body?: unknown): Promise<T> {
+async function liveApi<T>(params: Record<string, string>, body?: unknown): Promise<T> {
   const response = await fetch("/api/workspace?" + new URLSearchParams(params), {
     method: body ? "POST" : "GET", cache: "no-store", credentials: "same-origin",
     ...(body ? { headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {}),
@@ -32,9 +33,11 @@ function download(contents: string, filename: string) {
   document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
 }
 
-export default function Workspace({ account, initialSessionId = "" }: { account: Account; initialSessionId?: string }) {
+export default function Workspace({ account, initialSessionId = "", initialSection, transport, demo = false }: { account: Account; initialSessionId?: string; initialSection?: Section; transport?: WorkspaceTransport; demo?: boolean }) {
+  const api = transport ?? liveApi;
+  const featurePath = (view: string) => demo ? "/demo?view=" + view : "/" + view;
   const admin = account.role === "admin", staff = account.role !== "student";
-  const [section, setSection] = useState<Section>(selectedSessionId(initialSessionId) ? "attendance" : "overview");
+  const [section, setSection] = useState<Section>(initialSection ?? (selectedSessionId(initialSessionId) ? "attendance" : "overview"));
   const [menu, setMenu] = useState(false);
   const [summary, setSummary] = useState<Summary | null>(null);
   const [students, setStudents] = useState<Page<StudentRow>>(emptyPage);
@@ -65,25 +68,25 @@ export default function Workspace({ account, initialSessionId = "" }: { account:
     setSummary(values[0]); setStudents(values[1]); setCourses(values[2]); setSessions(values[3]);
     setCourseId(previous => previous || values[2].items[0]?.id || "");
     setSessionId(previous => previous || values[3].items[0]?.id || "");
-  }, []);
+  }, [api]);
   const loadRegister = useCallback(async () => {
     const version = ++registerVersion.current;
     if (!sessionId) { setRegister(null); return; }
     const value = await api<RegisterPage>({ resource: "register", sessionId, unmarked: String(unmarked) });
     if (version === registerVersion.current) setRegister(value);
-  }, [sessionId, unmarked]);
+  }, [sessionId, unmarked, api]);
   const loadEnrollments = useCallback(async () => {
     const version = ++courseVersion.current;
     if (!courseId) { setEnrollments(emptyPage()); return; }
     const value = await api<Page<EnrollmentRow>>({ resource: "enrollments", courseId });
     if (version === courseVersion.current) setEnrollments(value);
-  }, [courseId]);
+  }, [courseId, api]);
   const loadReceipts = useCallback(async () => {
     const version = ++receiptVersion.current;
     if (!receiptId) { setReceipts(null); return; }
     const value = await api<HistoryPage>({ resource: "history", attendanceId: receiptId });
     if (version === receiptVersion.current) setReceipts(value);
-  }, [receiptId]);
+  }, [receiptId, api]);
   useEffect(() => {
     setZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
     void loadInitial().catch(e => setError(e.message)).finally(() => setLoading(false));
@@ -196,23 +199,23 @@ export default function Workspace({ account, initialSessionId = "" }: { account:
   return <div className="app-shell register-app">
     <aside className={`sidebar ${menu ? "is-open" : ""}`}>
       <div className="brand"><div className="brand-mark"><Fingerprint size={22}/></div><div><strong>Face Recognition<br/>Attendance System</strong><small>INTELLIGENT ATTENDANCE</small></div></div>
-      <div className="sidebar-kicker">WORKSPACE</div><nav className="nav-list" aria-label="Main navigation">{nav.map(({ id, label, Icon }) => <button key={id} className={`nav-item ${section === id ? "active" : ""}`} aria-current={section === id ? "page" : undefined} onClick={() => { setSection(id); setMenu(false); }}><Icon size={18}/>{label}</button>)}<Link href="/check-in" className="nav-item"><Fingerprint size={18}/>Face check-in</Link><Link href="/guide" className="nav-item"><BookOpen size={18}/>Workspace guide</Link><Link href="/camera" className="nav-item"><ShieldCheck size={18}/>Camera & consent</Link>{account.role === "student" && <Link href="/enrollment" className="nav-item"><ShieldCheck size={18}/>Face enrollment</Link>}{account.role === "student" && <Link href="/verification" className="nav-item"><ShieldCheck size={18}/>Face comparison</Link>}</nav>
+      <div className="sidebar-kicker">WORKSPACE</div><nav className="nav-list" aria-label="Main navigation">{nav.map(({ id, label, Icon }) => <button key={id} className={`nav-item ${section === id ? "active" : ""}`} aria-current={section === id ? "page" : undefined} onClick={() => { setSection(id); setMenu(false); }}><Icon size={18}/>{label}</button>)}<Link href={featurePath("check-in")} className="nav-item"><Fingerprint size={18}/>Face check-in</Link><Link href={featurePath("guide")} className="nav-item"><BookOpen size={18}/>Workspace guide</Link><Link href={featurePath("camera")} className="nav-item"><ShieldCheck size={18}/>Camera & consent</Link>{(account.role === "student" || demo) && <Link href={featurePath("enrollment")} className="nav-item"><ShieldCheck size={18}/>Face enrollment</Link>}{(account.role === "student" || demo) && <Link href={featurePath("verification")} className="nav-item"><ShieldCheck size={18}/>Face comparison</Link>}</nav>
       <div className="sidebar-bottom"><div className="safety-dot"/><strong>Saved register</strong><p>Staff attendance and optional experimental face check-in save audited records.</p><div className="version">v0.6.0 · Local completion</div></div>
     </aside>
-    <main className="main-area"><header className="topbar"><button className="mobile-menu" aria-label="Toggle menu" onClick={() => setMenu(v => !v)}>{menu ? <X/> : <Menu/>}</button><div className="breadcrumbs">FACE RECOGNITION ATTENDANCE SYSTEM / <strong>{title}</strong></div><div className="top-actions"><span className="demo-chip"><span className="online-dot"/> DATABASE ATTENDANCE</span><AccountMenu account={account}/></div></header>
+    <main className="main-area"><header className="topbar"><button className="mobile-menu" aria-label="Toggle menu" onClick={() => setMenu(v => !v)}>{menu ? <X/> : <Menu/>}</button><div className="breadcrumbs">FACE RECOGNITION ATTENDANCE SYSTEM / <strong>{title}</strong></div><div className="top-actions"><span className="demo-chip"><span className="online-dot"/> {demo ? "TAB SANDBOX" : "DATABASE ATTENDANCE"}</span><AccountMenu account={account} demo={demo}/></div></header>
       <div className="content"><div className="page-head"><div><p className="eyebrow">{staff ? "CLASSROOM WORKSPACE" : "YOUR PERSONAL REGISTER"}</p><h1>{title}</h1><p>{staff ? "A saved record for every class. A clear receipt for every correction." : "Your linked courses and personal attendance records."}</p></div><button className="btn outline" onClick={() => void refresh()} disabled={busy}><RefreshCw size={15}/> Refresh workspace</button></div>
         {error && <div className="register-alert error" role="alert">{error}<button aria-label="Dismiss error" onClick={() => setError("")}><X size={16}/></button></div>}
         {notice && <div className="register-alert success" role="status">{notice}<button aria-label="Dismiss message" onClick={() => setNotice("")}><X size={16}/></button></div>}
         {loading && <section className="panel" role="status">Loading your saved workspace…</section>}
         {!loading && summary && <>
           {section === "overview" && <>
-            <CourseAnalyticsPanel/>
+            <CourseAnalyticsPanel transport={transport}/>
             <div className="hero-banner"><div className="hero-copy"><span className="banner-kicker"><ShieldCheck size={14}/> ACCOUNTABLE ATTENDANCE</span><h2>A clear record.<br/>A calmer classroom.</h2><p>Class rosters stay fixed when attendance opens. Every saved correction has a reason and a revision.</p><button className="hero-link" onClick={() => setSection("attendance")}>Open your register →</button></div><div className="orb-art" aria-hidden="true"><div className="orb orb-one"/><Fingerprint size={76} strokeWidth={0.85}/></div></div>
             <div className="stats-grid"><Stat label={staff ? "Students in your scope" : "My roster link"} value={summary.students}/><Stat label="Active courses" value={summary.courses}/><Stat label="Class sessions" value={summary.sessions}/><Stat label={staff ? "Saved attendance marks" : "My saved marks"} value={summary.marks}/></div>
             <div className="panel-grid"><section className="panel"><h3>{staff ? "Start a saved class" : "Your attendance workspace"}</h3><p className="note">{admin ? "Add students, create a course, and enroll its members. Then schedule a session and open attendance." : staff ? "Your administrator assigns courses and enrollments. Schedule a session for your course, then open attendance to capture its roster." : "Your administrator links your student account to a roster entry. You can then view your courses, marks, and correction receipts here."}</p><button className="text-link" onClick={() => setSection(admin ? "students" : "courses")}>{admin ? "Add students →" : "View courses →"}</button></section><section className="panel"><h3>Every number has a denominator</h3><p className="note">An open register shows progress and the unmarked queue. The final attendance rate appears after every status is saved and the session closes. Excused entries are excluded from its denominator.</p><span className="pill neutral">Present + late count as attending</span></section></div>
           </>}
           {section === "students" && staff && <>
-            {admin && <ActionForm title="Add a student" action="createStudent" submitLabel="Save student" busy={busy} mutate={mutate} message="Student saved to the database." fields={[{ name: "studentCode", label: "Student code", required: true, maxLength: 40, placeholder: "STU-001" }, { name: "displayName", label: "Student name", required: true, maxLength: 100, placeholder: "Demo Student 001" }, { name: "accountEmail", label: "Student account email (optional)", type: "email", maxLength: 254 }]} help="Create roster entries with synthetic data. An optional email links an existing student account to its own attendance view."/>}
+            {admin && <ActionForm title="Add a student" action="createStudent" submitLabel="Save student" busy={busy} mutate={mutate} message="Student saved." fields={[{ name: "studentCode", label: "Student code", required: true, maxLength: 40, placeholder: "STU-001" }, { name: "displayName", label: "Student name", required: true, maxLength: 100, placeholder: "Demo Student 001" }, { name: "accountEmail", label: "Student account email (optional)", type: "email", maxLength: 254 }]} help="Create roster entries with synthetic data. An optional email links an existing student account to its own attendance view."/>}
             <section className="panel"><h3>{admin ? "Student roster" : "Students in your courses"}</h3><div className="table-scroll"><table><thead><tr><th>STUDENT CODE</th><th>NAME</th><th>ACCOUNT LINK</th></tr></thead><tbody>{students.items.map(row => <tr key={row.id}><td className="mono">{row.student_code}</td><td>{row.display_name}</td><td>{row.user_id ? <span className="pill success">Linked</span> : admin ? <LinkStudent row={row} busy={busy} onLink={email => mutate("linkStudent", { studentId: row.id, accountEmail: email }, "Student account linked.")}/> : "Unlinked"}</td></tr>)}</tbody></table></div><Empty count={students.items.length} text="No students are available in your scope yet."/><More cursor={students.nextCursor} busy={busy} onClick={() => void more("students", students, setStudents)}/></section>
           </>}
           {section === "courses" && <>

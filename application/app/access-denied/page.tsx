@@ -23,6 +23,7 @@ export default async function AccessDeniedPage() {
       <p className="note">{pending ? "Your administrator will confirm your student number and link your class records. You can check back here without creating another account."
         : "Please contact your administrator to review your student registration."}</p>
       <p className="note">Student number: <strong>{registration.studentCode}</strong></p>
+      <Link className="btn outline" href="/demo">Try recruiter demo — no approval needed</Link>
       <div className="auth-status-actions"><Link className="btn primary" href="/" prefetch={false}>Check access status</Link><SignOutButton/></div>
     </section></main>;
   }
@@ -31,6 +32,6 @@ export default async function AccessDeniedPage() {
     <p>Your account does not currently have permission to open this page.</p>
     <p className="note">Contact your administrator, or sign out to use a different account.</p>
     <Link className="text-link" href="/">Return to your workspace</Link><br/>
-    <SignOutButton/>
+    <Link className="btn outline" href="/demo">Try recruiter demo</Link> <SignOutButton/>
   </section></main>;
 }

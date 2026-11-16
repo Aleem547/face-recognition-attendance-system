@@ -10,7 +10,9 @@ Built with **Next.js 15 · React 19 · TypeScript · PostgreSQL · Better Auth �
 
 **Account access:** `/login` now offers **Student login**, **Admin / Staff login**, and **Create an account**. New students register for administrator approval; existing roster records are linked only after an administrator verifies the request. Existing accounts keep their roles and credentials. See the [account access update](docs/account-access.md) for migration 010 and Render deployment instructions.
 
-**Status: working local research prototype.** Core register workflows have been demonstrated locally. Face matching and presentation attack detection (PAD) reliability remain unvalidated. Some manual acceptance scenarios are deferred. Docker deployment preparation is included; public hosting has not been created.
+**Recruiter demo:** Open `/demo` or choose **Try recruiter demo** on the login page. Explore administrator, teacher and student workflows immediately with synthetic records in an isolated browser-tab workspace. Try roster management, classes, audited corrections, CSV exports, analytics and accelerated class timing. An optional camera lab uses the real face engine with a short-lived encrypted reference. See the [recruiter demo guide](docs/demo.md).
+
+**Status: hosted research project.** The existing attendance and account-access application has been deployed on Render. The recruiter demo in this source update becomes available after redeployment. Face matching and presentation attack detection (PAD) reliability require separate biometric evaluation.
 
 ![Face Recognition Attendance System course analytics with synthetic records](assets/overview.png)
 

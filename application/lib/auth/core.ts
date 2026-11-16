@@ -5,10 +5,11 @@ type Settings = {
   baseURL: string;
   secret: string;
   bootstrap?: boolean;
+  studentRegistration?: boolean;
 };
 
 /** Pure factory shared by the server and the trusted, local account CLI. */
-export function createAttendAuth({ database, baseURL, secret, bootstrap = false }: Settings) {
+export function createAttendAuth({ database, baseURL, secret, bootstrap = false, studentRegistration = false }: Settings) {
   const origin = new URL(baseURL);
   const loopback = ["localhost", "127.0.0.1", "[::1]"].includes(origin.hostname);
   if (origin.username || origin.password || origin.search || origin.hash
@@ -28,12 +29,13 @@ export function createAttendAuth({ database, baseURL, secret, bootstrap = false 
     trustedOrigins: [origin.origin],
     emailAndPassword: {
       enabled: true,
-      disableSignUp: !bootstrap,
-      autoSignIn: false,
+      disableSignUp: !bootstrap && !studentRegistration,
+      autoSignIn: studentRegistration,
       minPasswordLength: 12,
       maxPasswordLength: 128,
-      // Accounts are provisioned by a trusted operator, not public registration.
-      // No email ownership verification is claimed or sent in this milestone.
+      // The public auth handler keeps sign-up disabled. A separate server-only
+      // registration handler creates student requests, which need admin approval.
+      // No email ownership verification is claimed without a configured sender.
       requireEmailVerification: false,
     },
     user: {
@@ -58,7 +60,10 @@ export function createAttendAuth({ database, baseURL, secret, bootstrap = false 
       modelName: "rate_limits",
       window: 60,
       max: 120,
-      customRules: { "/sign-in/email": { window: 60, max: 5 } },
+      customRules: {
+        "/sign-in/email": { window: 60, max: 5 },
+        "/sign-up/email": { window: 600, max: 5 },
+      },
     },
     advanced: {
       cookiePrefix: "attendai",

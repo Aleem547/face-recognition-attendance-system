@@ -2,6 +2,7 @@ import Link from "next/link";
 import AccountMenu from "@/components/account-menu";
 import { requirePageAccount } from "@/lib/server/access";
 import { getAppPool } from "@/lib/server/database";
+import AdminRegistrations from "@/components/admin-registrations";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -18,9 +19,10 @@ export default async function AdminPage() {
   return <main className="portal-shell">
     <header className="portal-header"><Link href="/">Face Recognition Attendance System</Link><AccountMenu account={account}/></header>
     <section className="panel portal-card portal-wide">
-      <p className="eyebrow">ADMINISTRATION</p><h1>Workspace accounts</h1>
-      <p className="note">Up to 100 most recently created accounts. Account creation and role changes
-        remain restricted to the trusted operator workflow in this milestone.</p>
+      <p className="eyebrow">ADMINISTRATION</p><h1>Admin panel</h1>
+      <p className="note">Approve student registrations and review workspace accounts. Administrator and teacher roles remain assigned through the trusted operator workflow.</p>
+      <AdminRegistrations/>
+      <h2>Workspace accounts</h2><p className="note">Up to 100 most recently created accounts.</p>
       <div className="table-scroll"><table><thead><tr><th>NAME</th><th>EMAIL</th><th>ROLE</th><th>STATUS</th></tr></thead>
         <tbody>{rows.map(user => <tr key={user.id}><td>{user.display_name}</td><td>{user.email}</td>
           <td>{user.role}</td><td>{user.is_active ? "Active" : "Inactive"}</td></tr>)}</tbody></table></div>

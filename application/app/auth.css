@@ -2,3 +2,16 @@
 
 .auth-brand svg{flex-shrink:0}.auth-brand strong{font-size:22px;line-height:1.2;letter-spacing:-.45px}.portal-header>a{max-width:70%;line-height:1.4}.auth-card h2{line-height:1.25}
 @media(max-width:450px){.auth-brand strong{font-size:20px}.portal-header>a{font-size:13px}}
+
+.auth-portal-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;background:#f1f4fa;border:1px solid #e0e6ef;border-radius:11px;margin-top:23px}
+.auth-portal-tabs a{text-align:center;padding:11px 7px;border-radius:7px;font-size:12px;font-weight:700;color:#57667c;text-decoration:none}
+.auth-portal-tabs a[aria-current=page]{background:#fff;color:#244fc0;box-shadow:0 1px 5px #18314c14}
+.auth-portal-tabs a:focus-visible,.auth-text-link:focus-visible{outline:3px solid #315fce;outline-offset:3px}
+.auth-portal-tabs+.auth-form{margin-top:16px}.auth-text-link{color:#2457c8;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.auth-help-secondary{margin-top:8px}.auth-field-help{font-size:12px;line-height:1.65;color:#6f7b8e;margin:0}.auth-form>.auth-field-help:last-child{margin-top:5px}
+.auth-status-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:25px}.auth-status-actions .signout-wrap{margin-top:0}
+.admin-registrations{margin:30px 0 38px;padding-bottom:28px;border-bottom:1px solid #e2e8f0}.registration-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.registration-heading h2{margin:0}.registration-review-actions{display:flex;gap:8px;flex-wrap:wrap}.registration-review-actions .btn{font-size:12px;padding:9px 12px}
+.admin-registrations select{width:100%;min-width:180px;padding:10px;border:1px solid #d8e0ed;border-radius:8px;background:#fff;color:#142036;font-size:12px}
+.registration-success{padding:12px 15px;background:#edf8f2;color:#256b48;border:1px solid #c9e7d7;border-radius:8px;font-size:13px;line-height:1.6}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}

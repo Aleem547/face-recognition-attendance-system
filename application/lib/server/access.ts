@@ -23,7 +23,7 @@ export async function currentIdentity(requestHeaders: Headers) {
 
 export async function requirePageAccount(roles?: readonly UserRole[]) {
   const identity = await currentIdentity(await headers());
-  if (identity.kind === "anonymous") redirect("/login");
+  if (identity.kind === "anonymous") redirect(roles?.includes("admin") && !roles.includes("student") ? "/login?role=admin" : "/login");
   if (identity.kind === "denied") redirect("/access-denied");
   if (permissionStatus(identity, roles) !== 200) redirect("/access-denied");
   return identity.account;

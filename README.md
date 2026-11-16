@@ -8,6 +8,8 @@ A role-based attendance application with a persistent class register, frozen ses
 
 Built with **Next.js 15 · React 19 · TypeScript · PostgreSQL · Better Auth · Python/OpenCV**.
 
+**Account access:** `/login` now offers **Student login**, **Admin / Staff login**, and **Create an account**. New students register for administrator approval; existing roster records are linked only after an administrator verifies the request. Existing accounts keep their roles and credentials. See the [account access update](docs/account-access.md) for migration 010 and Render deployment instructions.
+
 **Status: working local research prototype.** Core register workflows have been demonstrated locally. Face matching and presentation attack detection (PAD) reliability remain unvalidated. Some manual acceptance scenarios are deferred. Docker deployment preparation is included; public hosting has not been created.
 
 ![Face Recognition Attendance System course analytics with synthetic records](assets/overview.png)

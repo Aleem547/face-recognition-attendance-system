@@ -33,7 +33,7 @@ export function SignOutButton() {
 export default function AccountMenu({ account }: { account: Account }) {
   return <div className="account-menu">
     <span className="account-label"><strong>{account.displayName}</strong><small>{account.role}</small></span>
-    {account.role === "admin" && <Link className="small-button" href="/admin">Accounts</Link>}
+    {account.role === "admin" && <Link className="small-button" href="/admin">Admin panel</Link>}
     <SignOutButton/>
   </div>;
 }

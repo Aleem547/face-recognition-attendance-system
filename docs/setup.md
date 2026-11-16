@@ -39,6 +39,7 @@ In your database provider's SQL editor, connect as the owner to the **empty deve
 | 007 | `007_session_research.sql` |
 | 008 | `008_automatic_checkin.sql` |
 | 009 | `009_class_automation.sql` |
+| 010 | `010_student_registration.sql` |
 
 Each file contains its own transaction and version guard. If one fails, stop and inspect that error before continuing. Do not rerun an already recorded migration or drop existing schemas to make it run. The migrations do not insert user accounts, student images, attendance records, enrollment templates or class opt-ins.
 
@@ -53,7 +54,11 @@ node --env-file=.env.local scripts/configure-auth.mjs
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\New-ProjectAccount.ps1 -Role admin
 ```
 
-Authentication setup creates a random restricted runtime credential and auth secret when absent, persists them privately, and verifies the role's privileges. The account helper prompts locally for name, email and a hidden password. There is no bundled account or public self-registration. Create teacher/student accounts with the same helper's `-Role teacher` or `-Role student`, then link the appropriate account through the administrator interface.
+Authentication setup creates a random restricted runtime credential and auth secret when absent, persists them privately, and verifies the role's privileges. The account helper prompts locally for name, email and a hidden password. There is no bundled account. Create administrator and teacher accounts with this trusted local helper; these roles cannot be selected during public registration.
+
+Students can use **Create an account** on `/login`, enter their name, student number, email and password, and view their pending approval status. An existing administrator signs in using **Admin / Staff login**, opens **Admin panel**, and approves the student after checking their identity. Approval either creates a student record or links the correct existing unlinked record. A student number entered on the public form never claims an existing student's records automatically. Email ownership is not verified by this flow.
+
+For an established installation, apply only migration 010 as the database owner using the provider SQL editor, or use `node --env-file=PATH_TO_PRIVATE_ENV scripts/apply-student-registration.mjs`. The helper checks that the owner and restricted application URLs identify the same database, preserves TLS certificate verification, and skips a complete existing migration. Keep the owner credential outside Render and GitHub. See [Account access update](account-access.md).
 
 ## 4. Start the application
 

@@ -1,0 +1,23 @@
+{
+  "schema": "fras-account-access-validation-v1",
+  "date": "2026-11-16",
+  "baseBranch": "render-free-20261104200805440",
+  "baseCommit": "0d0a274e3f1b9305a7278c4b96f91b5c42ac8002",
+  "registrationAndApproval": {"status":"passed","namedChecks":27,"engine":"isolated PGlite with actual Better Auth HTTP handlers"},
+  "existingAuthentication": {"status":"passed","namedChecks":26,"existingDatabaseIntegrityChecks":23},
+  "persistentAttendance": {"status":"passed","namedChecks":32},
+  "typescript": {"status":"passed","command":"npm run typecheck"},
+  "productionBuild": {"status":"passed","command":"npm run build","nextVersion":"15.5.28"},
+  "visualInspection": {
+    "status":"passed",
+    "scope":"actual auth components rendered in an isolated static layout harness; desktop student/admin tabs and signup; narrow 390px signup frame",
+    "mobileDocumentWidth":375,
+    "mobileScrollWidth":375,
+    "hostedEndToEndTest":"not_performed"
+  },
+  "liveDatabaseChanges":"not_performed",
+  "githubPublication":"not_performed",
+  "renderDeployment":"not_performed",
+  "deploymentRequirements":["Apply only additive migration 010 as the existing database owner","Publish updated source to the configured Render branch","Manual Deploy latest commit in the existing Render service"],
+  "privateConfiguration":"No user credentials or private environment files were accessed or included"
+}
